@@ -1,5 +1,7 @@
 const pertanyaan = document.getElementById("pertanyaan");
 const jawapan = document.getElementById("jawapan");
+const loaders = document.getElementById("loaders");
+const container = document.getElementsByClassName("container");
 
 let init = 0;
 
@@ -18,6 +20,7 @@ pertanyaan.innerHTML = botSay()[0];
 let usersData = [];
 
 function botStart() {
+  if (jawapan.value.length < 1) return alert("Silakan isi jawapan dulu");
   init++;
   if (init === 1) {
     botDelay({ nama: jawapan.value });
@@ -35,9 +38,13 @@ function botStart() {
 }
 
 function botDelay(jawapanUser) {
+  loaders.style.display = "block";
+  container[0].style.filter = "blur(8px)";
   setTimeout(() => {
     pertanyaan.innerHTML = botSay(jawapanUser)[init];
-  }, 1250);
+    loaders.style.display = "none";
+    container[0].style.filter = "none";
+  }, 1000);
   usersData.push(jawapan.value);
   jawapan.value = "";
 }
@@ -48,5 +55,8 @@ function finishing() {
 }
 
 function botEnd() {
+  alert(
+    `Terima kasih ${usersData[0]} sudah datang, anda akan diarahkan ke halaman utama.`
+  );
   window.location.reload();
 }
